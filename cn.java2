@@ -1,0 +1,35 @@
+import java.util.*;
+public class SimpleDijkstra {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int INF = 9999;
+        System.out.print("Enter number of vertices: ");
+        int n = sc.nextInt();
+        int[][] graph = new int[n][n];
+        System.out.println("Enter adjacency matrix (use " + INF + " for no edge):");
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                graph[i][j] = sc.nextInt();
+        System.out.print("Enter source vertex (0 to " + (n - 1) + "): ");
+        int start = sc.nextInt();
+        int[] dist = new int[n];
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++) dist[i] = graph[start][i];
+        dist[start] = 0;
+        visited[start] = true;
+        for (int count = 1; count < n; count++) {
+            int min = INF, next = -1;
+            for (int i = 0; i < n; i++)
+                if (!visited[i] && dist[i] < min) { min = dist[i]; next = i; }
+            if (next == -1) break;
+            visited[next] = true;
+            for (int i = 0; i < n; i++)
+                if (!visited[i] && graph[next][i] != INF &&
+                    dist[next] + graph[next][i] < dist[i])
+                    dist[i] = dist[next] + graph[next][i];
+        }
+        System.out.println("\nShortest distances from vertex " + start + ":");
+        for (int i = 0; i < n; i++)
+            System.out.println("To " + i + " = " + dist[i]);
+    }
+}
